@@ -1,0 +1,50 @@
+# ==============================================================================
+# Script: figure4_6.py
+# Description: Radioactive Decay of Tc-99m and F-18 Over a 24-Hour Window
+# ==============================================================================
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+time_hours = np.linspace(0, 24, 300)
+
+# Tc-99m: T1/2 = 6 hours -> lambda = 0.693/6
+lambda_tc = 0.693 / 6
+A_tc = 100 * np.exp(-lambda_tc * time_hours)
+
+# F-18: T1/2 = 110 minutes = 110/60 hours -> lambda = 0.693/(110/60)
+lambda_f18 = 0.693 / (110/60)
+A_f18 = 100 * np.exp(-lambda_f18 * time_hours)
+
+fig, ax = plt.subplots(figsize=(11, 6))
+ax.plot(time_hours, A_tc,
+        color='#4C72B0', linewidth=2.5,
+        label='Tc-99m (T½ = 6 h)')
+ax.plot(time_hours, A_f18,
+        color='#C44E52', linewidth=2.5,
+        label='F-18 (T½ = 110 min)')
+
+ax.axhline(y=50, color='gray', linestyle='--',
+           linewidth=1.2, alpha=0.7, label='50% activity remaining')
+ax.axhline(y=25, color='orange', linestyle=':',
+           linewidth=1.2, alpha=0.7, label='25% activity remaining')
+
+ax.set_xlabel('Time After Production (hours)', fontsize=14)
+ax.set_ylabel('Activity Remaining (% of initial)', fontsize=14)
+ax.set_title('Radioactive Decay of Tc-99m and F-18\nOver a 24-Hour Transit Window',
+             fontsize=15, fontweight='bold', pad=12)
+ax.set_xlim(0, 24)
+ax.set_ylim(0, 110)
+ax.legend(fontsize=13)
+ax.yaxis.grid(True, alpha=0.3)
+ax.tick_params(axis='both', labelsize=12)
+
+ax.text(0.5, -0.13,
+        'Source: Physics-based calculation from decay constants. '
+        'T½ values from Harbert et al. (2018) and Cherry et al. (2012).',
+        ha='center', transform=ax.transAxes,
+        fontsize=10, style='italic', color='gray')
+
+plt.tight_layout()
+plt.savefig('figure4_6_decay_transit.png', dpi=300, bbox_inches='tight')
+plt.show()
