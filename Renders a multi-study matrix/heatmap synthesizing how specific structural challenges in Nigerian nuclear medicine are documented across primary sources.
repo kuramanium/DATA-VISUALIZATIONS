@@ -1,0 +1,66 @@
+# ==============================================================================
+# Script: figure4_7.py
+# Description: Multi-Study Challenge Documentation Synthesis Matrix
+# ==============================================================================
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+challenges = [
+    'Awareness-\nparticipation gap',
+    'Geographic\ninequity',
+    'Supply chain\nfragility',
+    'Workforce\nshortage',
+    'Private sector\ngrowth',
+]
+
+sources = [
+    'Sowunmi\n(2019)',
+    'Isah\n(2022)',
+    'Orunmuyi\n(2019)',
+    'Taiwo &\nOrunmuyi\n(2021)',
+    'Brink\n(2026)',
+    'NNRA\n(n.d.)',
+]
+
+# 1 = documented in source, 0 = not documented
+data = np.array([
+    [1, 1, 0, 0, 1, 0],   # Awareness-participation gap
+    [0, 0, 0, 1, 0, 1],   # Geographic inequity
+    [0, 0, 1, 0, 0, 0],   # Supply chain fragility
+    [0, 1, 1, 0, 1, 0],   # Workforce shortage
+    [0, 0, 0, 0, 0, 1],   # Private sector growth
+])
+
+fig, ax = plt.subplots(figsize=(13, 6))
+im = ax.imshow(data, cmap='RdYlGn', aspect='auto', vmin=0, vmax=1)
+
+ax.set_xticks(np.arange(len(sources)))
+ax.set_yticks(np.arange(len(challenges)))
+ax.set_xticklabels(sources, fontsize=11)
+ax.set_yticklabels(challenges, fontsize=11)
+
+for i in range(len(challenges)):
+    for j in range(len(sources)):
+        ax.text(j, i,
+                'YES' if data[i, j] == 1 else 'NO',
+                ha='center', va='center',
+                color='black', fontsize=11, fontweight='bold')
+
+ax.set_title('Challenge Documentation Across Verified Sources\n'
+             'Multi-Study Evidence Synthesis',
+             fontsize=14, fontweight='bold', pad=12)
+
+cbar = plt.colorbar(im, ax=ax, shrink=0.55)
+cbar.set_ticks([0, 1])
+cbar.set_ticklabels(['Not documented', 'Documented'])
+cbar.ax.tick_params(labelsize=11)
+
+ax.text(0.5, -0.12,
+        'Source: Author\'s synthesis from verified secondary sources.',
+        ha='center', transform=ax.transAxes,
+        fontsize=10, style='italic', color='gray')
+
+plt.tight_layout()
+plt.savefig('figure4_7_synthesis_heatmap.png', dpi=300, bbox_inches='tight')
+plt.show()
