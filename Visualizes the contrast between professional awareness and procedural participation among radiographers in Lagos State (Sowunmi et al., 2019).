@@ -1,0 +1,51 @@
+# ==============================================================================
+# Script: figure4_3.py
+# Description: Nuclear Medicine Awareness vs. Participation Gap (Sowunmi et al., 2019)
+# ==============================================================================
+
+import matplotlib.pyplot as plt
+
+labels = [
+    'Aware of\nnuclear medicine\n(94.9%)',
+    'Have participated in a\nnuclear medicine procedure\n(1.1%)'
+]
+percentages = [94.9, 1.1]
+colors = ['#4C72B0', '#C44E52']
+
+fig, ax = plt.subplots(figsize=(9, 6))
+bars = ax.bar(labels, percentages, color=colors,
+              edgecolor='black', width=0.45)
+
+ax.set_ylabel('Percentage of Respondents (%)', fontsize=14)
+ax.set_title('Nuclear Medicine Awareness vs Participation Gap\n'
+             'Among Lagos State Radiographers (Sowunmi et al., 2019; n = 175)',
+             fontsize=15, fontweight='bold', pad=12)
+ax.set_ylim(0, 110)
+ax.yaxis.grid(True, alpha=0.3)
+ax.tick_params(axis='x', labelsize=13)
+ax.tick_params(axis='y', labelsize=12)
+
+for bar, pct in zip(bars, percentages):
+    ax.text(bar.get_x() + bar.get_width()/2,
+            bar.get_height() + 2,
+            f'{pct}%', ha='center', va='bottom',
+            fontsize=14, fontweight='bold')
+
+ax.annotate('',
+            xy=(1, 1.1 + 2), xytext=(0, 94.9 + 2),
+            xycoords=('data', 'data'), textcoords=('data', 'data'),
+            arrowprops=dict(arrowstyle='<->', color='black', lw=1.5))
+ax.text(0.5, 50, '93.8 percentage\npoint gap',
+        ha='center', fontsize=12, color='black',
+        bbox=dict(boxstyle='round,pad=0.3', facecolor='lightyellow',
+                  edgecolor='gray'))
+
+ax.text(0.5, -0.13,
+        'Source: Sowunmi et al. (2019). '
+        'n = 175 Lagos State radiographers across 13 diagnostic centres.',
+        ha='center', transform=ax.transAxes,
+        fontsize=10, style='italic', color='gray')
+
+plt.tight_layout()
+plt.savefig('figure4_3_awareness_gap.png', dpi=300, bbox_inches='tight')
+plt.show()
