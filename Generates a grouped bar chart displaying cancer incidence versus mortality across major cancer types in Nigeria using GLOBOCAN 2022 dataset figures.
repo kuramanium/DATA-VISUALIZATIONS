@@ -1,0 +1,54 @@
+# ==============================================================================
+# Script: figure4_1.py
+# Description: Cancer Incidence and Mortality by Type in Nigeria (GLOBOCAN 2022)
+# ==============================================================================
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+cancer_types = [
+    'Breast', 'Prostate', 'Cervix\nuteri',
+    'Colorectum', 'Liver', 'All others'
+]
+new_cases = [32278, 18019, 13676, 8114, 4382, 51294]
+deaths    = [16332, 11443,  7093, 5912, 4252, 34510]
+
+x = np.arange(len(cancer_types))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(12, 7))
+bars1 = ax.bar(x - width/2, new_cases, width,
+               label='New Cases', color='#4C72B0', edgecolor='black')
+bars2 = ax.bar(x + width/2, deaths, width,
+               label='Deaths', color='#C44E52', edgecolor='black')
+
+ax.set_xlabel('Cancer Type', fontsize=14)
+ax.set_ylabel('Number of Cases', fontsize=14)
+ax.set_title('Cancer Incidence and Mortality by Type in Nigeria\n(GLOBOCAN 2022)',
+             fontsize=16, fontweight='bold', pad=12)
+ax.set_xticks(x)
+ax.set_xticklabels(cancer_types, fontsize=12)
+ax.tick_params(axis='y', labelsize=12)
+ax.legend(fontsize=13)
+ax.yaxis.set_major_formatter(
+    plt.FuncFormatter(lambda v, _: f'{int(v):,}'))
+ax.yaxis.grid(True, alpha=0.3)
+
+for bar in bars1:
+    ax.annotate(f'{int(bar.get_height()):,}',
+                xy=(bar.get_x() + bar.get_width()/2, bar.get_height()),
+                xytext=(0, 4), textcoords='offset points',
+                ha='center', va='bottom', fontsize=10)
+for bar in bars2:
+    ax.annotate(f'{int(bar.get_height()):,}',
+                xy=(bar.get_x() + bar.get_width()/2, bar.get_height()),
+                xytext=(0, 4), textcoords='offset points',
+                ha='center', va='bottom', fontsize=10)
+
+ax.text(0.5, -0.12, 'Source: IARC GLOBOCAN 2022, Nigeria fact sheet.',
+        ha='center', transform=ax.transAxes,
+        fontsize=10, style='italic', color='gray')
+
+plt.tight_layout()
+plt.savefig('figure4_1_cancer_burden.png', dpi=300, bbox_inches='tight')
+plt.show()
